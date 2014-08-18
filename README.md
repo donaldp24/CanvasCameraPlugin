@@ -1,0 +1,4 @@
+CanvasCameraPugin
+=================
+
+Phonegap CanvasCameraPlugin
