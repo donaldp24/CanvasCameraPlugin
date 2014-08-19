@@ -225,248 +225,110 @@ CanvasCamera.PictureSourceType = {
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Assets Picker Plugin</title>
+        <meta name="msapplication-tap-highlight" content="no" />
+        <title>Hello World</title>
     </head>
     <body>
         <div class="app">
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
-                <img id="overlay" src="img/overlay.png"></img>
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
-                
             </div>
+            
+            <h2> Camera Position </h2>
+            <input type="radio" name="deviceposition" id="deviceposition_back" value="Back" onclick="onChangeDevicePosition();"/>
+            <label for="deviceposition_back">Back</label>
+            <br/>
+            <input type="radio" name="deviceposition" id="deviceposition_front" value="Front" onclick="onChangeDevicePosition();"/>
+            <label for="deviceposition_front">Front</label>
+            
+            
+            <h2> Flash Mode </h2>
+            <input type="radio" name="flashmode" id="flashmode_off" value="Off" onclick="onChangeFlashMode();"/>
+            <label for="flashmode_off">Off</label>
+            <br/>
+            <input type="radio" name="flashmode" id="flashmode_on" value="On" onclick="onChangeFlashMode();"/>
+            <label for="flashmode_on">On</label>
+            <br/>
+            <input type="radio" name="flashmode" id="flashmode_auto" value="Auto" onclick="onChangeFlashMode();"/>
+            <label for="flashmode_auto">Auto</label>
+            <br/>
+            
+            <input type="button" value="Take a picture" onclick="onTakePicture();" />
+
+
         </div>
-        <div style="position:absolute;left:0%;top:0%">
-            <table id="imagetable">
-            </table>
-        </div>
-        <div style="position:absolute;left:20%;top:20%">
-            <input type="button" value="Pick" onclick="onPick()" style="width:100px;height:30px"/>
-            <input type="button" value="Clear" onclick="onClear()" style="width:100px;height:30px"/>
-            <input type="button" value="Map" onclick="onMap()" style="width:100px;height:30px"/>
-        </div>
-        <div style="position:absolute;left:20%;top:30%">
-            <input type="radio" value="0" id="normal" name="type" onclick="onNormalBookmarkClicked()" checked/>
-            <label for="normal" value="Normal Bookmarks" >Normal Bookmarks </label> <br>
-            <input type="radio" value="1" id="date" name="type" onclick="onDateBookmarkClicked()"/>
-            <label for="date" value="Date Bookmarks">Date Bookmarks </label>
-        </div>
+        
+	<!— camera preview canvas —>
+        <canvas id="camera" width="352" height="288" style="border:2px"></canvas>
+        
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();
-            </script>
-        <script type="text/javascript">
-            var selectedAssets = new Array();
-            var isFileUri = true; // get uri or data
-            
-            var isResize = true; // use resize feature or not
-            var targetWidth = 640;
-            var targetHeight = 640;
-            
-            var isUseGetById = false; // call getById to get picture data or access directly
-            var isResizeOnGetById = false;
-            
-            var previousAlbums = {};
-            
-            // called when "pick" button is clicked
-            function onPick()
-            {
-                
-                // set overlay icon
-                if (document.getElementById("overlay"))
+        </script>
+        
+        <script>
+            document.addEventListener("deviceready", function() {
+                                          canvasMain = document.getElementById("camera");
+                                          CanvasCamera.initialize(canvasMain);
+                                          // define options
+                                          var opt = {
+                                              quality: 75,
+                                              destinationType: CanvasCamera.DestinationType.DATA_URL,
+                                              encodingType: CanvasCamera.EncodingType.JPEG,
+                                              saveToPhotoAlbum:true,
+                                              correctOrientation:true,
+                                              width:640,
+                                              height:480
+                                          };
+                                          CanvasCamera.start(opt);
+                                      });
+      
+            function onChangeDevicePosition() {
+
+                var newDevicePosition = CanvasCamera.CameraPosition.BACK;
+                if (document.getElementById("deviceposition_back").checked)
                 {
-                    var overlayIcon = getBase64Image(document.getElementById("overlay"));
-                    window.plugin.snappi.assetspicker.setOverlay(Camera.Overlay.PREVIOUS_SELECTED, overlayIcon, function(){}, function(msg){alert("failure in setOverlay:" + msg);});
+                    newDevicePosition = CanvasCamera.CameraPosition.BACK;
+                }
+                else if (document.getElementById("deviceposition_front").checked)
+                {
+                    newDevicePosition = CanvasCamera.CameraPosition.FRONT;
+                }
+                //
+                CanvasCamera.setCameraPosition(newDevicePosition);
+            }
+            
+            function onChangeFlashMode() {
+                
+                var newFlashMode = CanvasCamera.FlashMode.OFF;
+                if (document.getElementById("flashmode_off").checked)
+                {
+                    newFlashMode = CanvasCamera.FlashMode.OFF;
+                }
+                else if (document.getElementById("flashmode_on").checked)
+                {
+                    newFlashMode = CanvasCamera.FlashMode.ON;
+                }
+                else if (document.getElementById("flashmode_auto").checked)
+                {
+                    newFlashMode = CanvasCamera.FlashMode.AUTO;
                 }
                 
-                var assetsUuidExt = new Array();
-                if (selectedAssets != null && selectedAssets.length != 0)
-                {
-                    for (var i = 0; i < selectedAssets.length; i++)
-                    {
-                        assetsUuidExt[i] = selectedAssets[i].uuid + "." + selectedAssets[i].orig_ext;
-                    }
-                }
-                var overlayObj = {};
-                
-                overlayObj[Camera.Overlay.PREVIOUS_SELECTED] = assetsUuidExt;
-                
-                
-                
-                var options = {
-                    quality: 75,
-                    
-                    encodingType: Camera.EncodingType.JPEG,
-                    overlay: overlayObj,
-                    thumbnail: true,
-                    popoverOptions: {
-                        x : 300,
-                        y : 200,
-                        width : 40,
-                        height : 20,
-                        arrowDir : Camera.PopoverArrowDirection.ARROW_ANY,
-			popoverWidth : 500,
-			popoverHeight : 500
-                    }
-                };
-                if (isFileUri == true)
-                options.destinationType = Camera.DestinationType.FILE_URI;
-                else
-                options.destinationType = Camera.DestinationType.DATA_URL;
-                if (isResize == true)
-                {
-                    options.targetWidth = targetWidth;
-                    options.targetHeight = targetHeight;
-                }
-                
-                options.bookmarks = previousAlbums;
-                
-                window.plugin.snappi.assetspicker.getPicture(onSuccess, onCancel, options);
-            }
-        
-        // called when "clear" button is clicked
-        function onClear()
-        {
-            selectedAssets = new Array();
-            document.getElementById("imagetable").innerHTML = "";
-        }
-        
-        // success callback
-        function onSuccess(dataArray)
-        {
-            // get previous albums
-            if (document.getElementById("normal").checked)
-            {
-                getPreviousAlbums();
+                CanvasCamera.setFlashMode(newFlashMode);
             }
             
-            
-            selectedAssets = dataArray;
-            var strTr = "";
-            for (i = 0; i < selectedAssets.length; i++)
-            {
-                var obj = selectedAssets[i];
-                strTr += "<tr><td><img id='" + obj.id + "' /></td><td>" + obj.exif.PixelXDimension + " x " + obj.exif.PixelYDimension + " : " + obj.exif.Orientation + "</td><td>" + obj.exif.DateTimeOriginal + "</td></tr>";
+            function onTakePicture() {
+                CanvasCamera.takePicture(onTakeSuccess);
             }
-            document.getElementById("imagetable").innerHTML = strTr;
-            for (i = 0; i < selectedAssets.length; i++)
-            {
-                var obj = selectedAssets[i];
-                
-                var image = document.getElementById(obj.id);
-                if (isFileUri)
-                {
-                    if (isUseGetById)
-                    {
-                        var options = {
-                            quality: 75,
-                            destinationType: Camera.DestinationType.DATA_URL,
-                            encodingType: Camera.EncodingType.JPEG
-                        };
-                        
-                        if (isResizeOnGetById == true)
-                        {
-                            options.targetWidth = targetWidth;
-                            options.targetHeight = targetHeight;
-                        }
-                        window.plugin.snappi.assetspicker.getById(obj.uuid, obj.orig_ext, onGetById, onCancel, options);
-                    }
-                    else
-                    image.src = obj.data;
-                    
-                }
-                else
-                image.src = "data:image/jpeg;base64," + obj.data;
+            
+            function onTakeSuccess(data) {
+                //
             }
-        }
-        
-        // cancel callback
-        function onCancel(message)
-        {
-            // get previous albums
-            if (document.getElementById("normal").checked)
-            {
-                getPreviousAlbums();
-            }
-            //alert(message);
-        }
-        
-        // getById success callback
-        function onGetById(data)
-        {
-            var image = document.getElementById(data.id);
-            image.src = "data:image/jpeg;base64," + data.data;
-        }
-        
-        function getBase64Image(img)
-        {
-            // Create an empty canvas element
-            var canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            
-            // Copy the image contents to the canvas
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            
-            // Get the data-URL formatted image
-            // Firefox supports PNG and JPEG. You could check img.src to
-            // guess the original format, but be aware the using "image/jpg"
-            // will re-encode the image.
-            var dataURL = canvas.toDataURL("image/png");
-            
-            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        }
-        
-        function onNormalBookmarkClicked()
-        {
-            // get previous albums
-            getPreviousAlbums();
-        }
-        
-        function getPreviousAlbums()
-        {
-            // get previous albums
-            window.plugin.snappi.assetspicker.getPreviousAlbums(onGetPreviousAlbumsSuccess, onGetPreviousAlbumsFailure);
-        }
-        
-        function onGetPreviousAlbumsFailure(msg)
-        {
-            alert(msg);
-        }
-        
-        function onGetPreviousAlbumsSuccess(result)
-        {
-            previousAlbums = result;
-        }
-        
-        function onDateBookmarkClicked()
-        {
-            previousAlbums = { "date" : ["2014-04-04", "2014-06-03", "2014-06-04", "2014-06-05"]};
-        }
-        
-        function onMap()
-        {
-            options = {
-                pluck:["DateTimeOriginal"],
-                fromDate:"2014-04-04T12:03:24.234Z",
-                toDate:"2014-06-04T03:12:35.523Z"};
-            window.plugin.snappi.assetspicker.mapAssetsLibrary(onMapSuccess, onMapFailed, options);
-        }
-        
-        function onMapSuccess(mapped)
-        {
-            alert(mapped.lastDate + ",  count : " + mapped.assets.length);
-        }
-        
-        function onMapFailed(message)
-        {
-            //
-        }
-        
-            </script>    </body>
+        </script>
+    </body>
 </html>
 ```
 

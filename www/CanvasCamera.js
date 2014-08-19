@@ -6,110 +6,121 @@
 //
 //  MIT License
 
-cordova.define("cordova/plugin/CanvasCamera", function(require, exports, module)
-{
-   var exec = require('cordova/exec');
-   var CanvasCamera = function(){};
-   
-   CanvasCamera._orientation = 'landscape';
-   CanvasCamera._obj = null;
-   CanvasCamera._context = null;
-   CanvasCamera._camImage = null;
+cordova.define("cordova/plugin/CanvasCamera", function(require, exports, module) {
+    var exec = require('cordova/exec');
+    var CanvasCamera = function(){
+        var _orientation = 'landscape';
+        var _obj = null;
+        var _context = null;
+        var _camImage = null;
 
-   CanvasCamera._x = 0;
-   CanvasCamera._y = 0;
-   CanvasCamera._width = 0;
-   CanvasCamera._height = 0;
-    
-  CanvasCamera.prototype.initialize = function(obj) {
-      this._obj = obj;
-       this._context = obj.getContext("2d");
-       this._camImage = new Image();
-       this._camImage.onload = function() {
-               context.clearRect(0, 0, CanvasCamera._width, CanvasCamera._height);
-               if (window.orientation == 90
-                   || window.orientation == -90)
-               {
-                   CanvasCamera._context.save();
-                   // rotate 90
-                   CanvasCamera._context.translate(CanvasCamera._width/2, CanvasCamera._height/2);
-                   CanvasCamera._context.rotate((90 - window.orientation) *Math.PI/180);
-                   CanvasCamera._context.drawImage(camImage, 0, 0, 352, 288, -CanvasCamera._width/2, -CanvasCamera._height/2, CanvasCamera._width, CanvasCamera._height);
-                   //
-                   CanvasCamera._context.restore();
-               }
-               else
-               {
-                   CanvasCamera._context.save();
-                   // rotate 90
-                   CanvasCamera._context.translate(CanvasCamera._width/2, CanvasCamera._height/2);
-                   CanvasCamera._context.rotate((90 - window.orientation) *Math.PI/180);
-                   CanvasCamera._context.drawImage(camImage, 0, 0, 352, 288, -CanvasCamera._height/2, -CanvasCamera._width/2, CanvasCamera._height, CanvasCamera._width);
-                   //
-                   CanvasCamera._context.restore();
-               }
-        };
-      
-      // register orientation change event
-      window.addEventListener('orientationchange', this.doOrientationChange);
-      this.doOrientationChange();
-      
-  };
-               
-               
-  CanvasCamera.prototype.start = function(options) {
-    cordova.exec(false, false, "CanvasCamera", "startCapture", [options]);
-  };
-               
-               
-               
-  CanvasCamera.prototype.capture = function(data) {
-               camImage.src = data;
+        var _x = 0;
+        var _y = 0;
+        var _width = 0;
+        var _height = 0;
     };
-               
+
+
+
+
+    CanvasCamera.prototype.initialize = function(obj) {
+        var _this = this;
+        this._obj = obj;
+
+        this._context = obj.getContext("2d");
+
+        this._camImage = new Image();
+
+        this._camImage.onload = function() {
+            _this._context.clearRect(0, 0, _this._width, _this._height);
+            if (window.orientation == 90
+               || window.orientation == -90)
+            {
+                _this._context.save();
+                // rotate 90
+                _this._context.translate(_this._width/2, _this._height/2);
+                _this._context.rotate((90 - window.orientation) *Math.PI/180);
+                _this._context.drawImage(_this._camImage, 0, 0, 352, 288, -_this._width/2, -_this._height/2, _this._width, _this._height);
+                //
+                _this._context.restore();
+            }
+            else
+            {
+                _this._context.save();
+                // rotate 90
+                _this._context.translate(_this._width/2, _this._height/2);
+                _this._context.rotate((90 - window.orientation)*Math.PI/180);
+                _this._context.drawImage(_this._camImage, 0, 0, 352, 288, -_this._height/2, -_this._width/2, _this._height, _this._width);
+                //
+                _this._context.restore();
+            }
+        };
+
+        // register orientation change event
+        window.addEventListener('orientationchange', this.doOrientationChange);
+        this.doOrientationChange();
+    };
+
+
+    CanvasCamera.prototype.start = function(options) {
+        cordova.exec(false, false, "CanvasCamera", "startCapture", [options]);
+    };
+
+
+
+    CanvasCamera.prototype.capture = function(data) {
+        this._camImage.src = data;
+    };
+
     CanvasCamera.prototype.setFlashMode = function(flashMode) {
         cordova.exec(function(){}, function(){}, "CanvasCamera", "setFlashMode", [flashMode]);
-               };
-               
+    };
+
     CanvasCamera.prototype.setCameraPosition = function(cameraPosition) {
         cordova.exec(function(){}, function(){}, "CanvasCamera", "setCameraPosition", [cameraPosition]);
     };
-               
+
     CanvasCamera.prototype.doOrientationChange = function() {
         switch(window.orientation)
         {
             case -90:
             case 90:
-                CanvasCamera._orientation = 'landscape';
+                this._orientation = 'landscape';
                 break;
             default:
-                CanvasCamera._orientation = 'portrait';
+                this._orientation = 'portrait';
                 break;
         }
-        
+
         var windowWidth = window.innerWidth;
         var windowHeight = window.innerHeight;
         var pixelRatio = window.devicePixelRatio || 1; /// get pixel ratio of device
-        
-        CanvasCamera._obj.width = windowWidth;// * pixelRatio;   /// resolution of canvas
-        CanvasCamera._obj.height = windowHeight;// * pixelRatio;
-        
-        CanvasCamera._obj.style.width = windowWidth + 'px';   /// CSS size of canvas
-        CanvasCamera._obj.style.height = windowHeight + 'px';
-        
-        CanvasCamera._x = 0;
-        CanvasCamera._y = 0;
-        CanvasCamera._width = windowWidth;
-        CanvasCamera._height = windowHeight;
-        
+
+
+        this._obj.width = windowWidth;// * pixelRatio;   /// resolution of canvas
+        this._obj.height = windowHeight;// * pixelRatio;
+
+
+        this._obj.style.width = windowWidth + 'px';   /// CSS size of canvas
+        this._obj.style.height = windowHeight + 'px';
+
+
+        this._x = 0;
+        this._y = 0;
+        this._width = windowWidth;
+        this._height = windowHeight;
     };
-               
+
     CanvasCamera.prototype.takePicture = function(onsuccess) {
         cordova.exec(onsuccess, function(){}, "CanvasCamera", "captureImage", []);
     };
-};
-               
+
+    var myplugin = new CanvasCamera();
+    module.exports = myplugin;
+});
+
 var CanvasCamera = cordova.require("cordova/plugin/CanvasCamera");
+
 
 var DestinationType = {
     DATA_URL : 0,
@@ -121,7 +132,7 @@ var PictureSourceType = {
     CAMERA : 1,
     SAVEDPHOTOALBUM : 2
 };
-               
+
 var EncodingType = {
     JPEG : 0,
     PNG : 1
