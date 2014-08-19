@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="com.keith.cordova.plugin.canvascamera"
+        version="1.0.0dev">
+
+    <name>CanvasCamera</name>
+
+    <description>The purpose of the plugin is to create an platform independent javascript interface for Cordova based mobile applications to preview camera and to take picture.</description>
+    <repo>https://github.com/donaldp24/CanvasCameraPlugin.git</repo>
+    <keywords>camera, canvas camera, take photos</keywords>
+    <license>Apache 2.0</license>
+
+    <author>Donald Pae</author>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/CanvasCamera.js" name="CanvasCamera">
+        <clobbers target="plugin.keith.CanvasCamera" />
+        <clobbers target="CanvasCamera" />
+    </js-module>
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="CanvasCamera">
+                <param name="ios-package" value="CanvasCamera" onload="true" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <!-- plugin header and source files -->
+        <header-file src="src/ios/CanvasCamera.h" />
+        <source-file src="src/ios/CanvasCamera.m" />
+
+        <!-- system frameworks -->
+        <framework src="AssetsLibrary.framework" weak="true" />
+        <framework src="ImageIO.framework" weak="true" />
+        <framework src="CoreImage.framework" weak="true" />
+        <framework src="CoreVideo.framework" weak="true" />
+        <framework src="CoreMedia.framework" weak="true" />
+        <framework src="CoreGraphics.framework" weak="true" />
+        <framework src="MobileCoreServices.framework" weak="true" />
+    </platform>
+
+</plugin>
