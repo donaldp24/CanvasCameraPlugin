@@ -44,5 +44,27 @@
         <framework src="CoreGraphics.framework" weak="true" />
         <framework src="MobileCoreServices.framework" weak="true" />
     </platform>
+	
+	 <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="CanvasCamera">
+                <param name="android-package" value="com.keith.CanvasCameraPlugin.CanvasCamera"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-permission android:name="android.permission.RECORD_VIDEO" />
+			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			<uses-permission android:name="android.permission.CAMERA" />
+			
+			<uses-feature android:name="android.hardware.camera" />
+			<uses-feature android:name="android.hardware.camera.autofocus" />
+			<uses-feature android:name="android.hardware.camera.setParameters" />			
+        </config-file>
+
+        <lib-file src="libs/android/android-support-v4.jar" />
+        <source-file src="src/android/CanvasCamera.java" target-dir="src/com/keith/CanvasCameraPlugin" />
+    </platform>
 
 </plugin>
