@@ -63,7 +63,6 @@
 			<uses-feature android:name="android.hardware.camera.setParameters" />			
         </config-file>
 
-        <lib-file src="libs/android/android-support-v4.jar" />
         <source-file src="src/android/CanvasCamera.java" target-dir="src/com/keith/CanvasCameraPlugin" />
     </platform>
 
