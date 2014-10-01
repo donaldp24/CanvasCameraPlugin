@@ -20,8 +20,6 @@ import android.hardware.Camera.PictureCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.phonegap.canvascamerasample.R;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
