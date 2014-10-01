@@ -49,9 +49,17 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="CanvasCamera">
-                <param name="android-package" value="com.keith.CanvasCameraPlugin.CanvasCamera"/>
+                <param name="android-package" value="com.keith.canvascameraplugin.CanvasCamera"/>
             </feature>
         </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+	        <activity
+	                android:name="com.keith.canvascameraplugin.CanvasCameraView"
+	                android:label="@string/app_name"
+	                android:theme="@android:style/Theme.Black.NoTitleBar">
+	        </activity>
+	</config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
 			<uses-permission android:name="android.permission.RECORD_VIDEO" />
@@ -63,7 +71,8 @@
 			<uses-feature android:name="android.hardware.camera.setParameters" />			
         </config-file>
 
-        <source-file src="src/android/CanvasCamera.java" target-dir="src/com/keith/CanvasCameraPlugin" />
+        <source-file src="src/android/CanvasCamera.java" target-dir="src/com/keith/canvascameraplugin" />
+        <source-file src="src/android/CanvasCameraView.java" target-dir="src/com/keith/canvascameraplugin" />
     </platform>
 
 </plugin>
