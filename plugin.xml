@@ -73,6 +73,18 @@
 
         <source-file src="src/android/CanvasCamera.java" target-dir="src/com/keith/canvascameraplugin" />
         <source-file src="src/android/CanvasCameraView.java" target-dir="src/com/keith/canvascameraplugin" />
+        
+        <source-file src="src/android/res/drawable-hdpi/camera.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/res/drawable-hdpi/video_sprites_close.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/res/drawable-hdpi/video_sprites_focus.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/res/drawable-hdpi/video_sprites_focus_inactive.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/res/drawable-hdpi/video_sprites_revert.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/res/drawable-hdpi/video_sprites_revert_inactive.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/res/layout/canvascamera.xml" target-dir="res/layout"/>
+        <source-file src="src/android/res/layout-land/canvascamera.xml" target-dir="res/layout-land"/>
+        <source-file src="src/android/res/values/color.xml" target-dir="res/values"/>
+        <source-file src="src/android/res/values/styles.xml" target-dir="res/values"/>
+
     </platform>
 
 </plugin>
