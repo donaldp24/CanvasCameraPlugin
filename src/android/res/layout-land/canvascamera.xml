@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:id="@+id/linearRoot">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" android:layout_gravity="center" android:layout_weight="0.7"
+            android:id="@+id/statusView"
+            android:paddingLeft="15dp" android:paddingRight="15dp">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp" android:layout_weight="1">
+        </LinearLayout>
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:id="@+id/imgFlash" android:src="@drawable/video_sprites_focus" android:layout_weight="3"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                      android:layout_weight="1" android:id="@+id/linearLayout4"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                      android:layout_weight="3" android:id="@+id/linearLayout7"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                      android:layout_weight="1" android:id="@+id/linearLayout"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_height="fill_parent"
+                  android:layout_gravity="center" android:id="@+id/videoView" android:layout_weight="5"
+            >
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <SurfaceView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/surfaceView"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WO# 1234567890"
+                      android:id="@+id/textView" android:layout_weight="9" android:textColor="@color/white"
+                      android:layout_gravity="center" android:layout_centerHorizontal="true"
+                      android:layout_marginTop="5dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_height="fill_parent"
+                  android:layout_gravity="center" android:id="@+id/controlView" android:layout_weight="1"
+                  android:paddingLeft="25dp"
+                  android:paddingRight="25dp">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0dp"
+                      android:layout_weight="1" android:id="@+id/linearLayout1"/>
+        <ImageView android:layout_width="fill_parent" android:layout_height="0dp" android:id="@+id/imgRevert"
+                   android:src="@drawable/video_sprites_revert" android:layout_weight="3"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:layout_weight="1" android:id="@+id/linearLayout5"/>
+        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/imgCapture"
+                   android:src="@drawable/camera" android:layout_weight="3"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:layout_weight="1" android:id="@+id/linearLayout6"/>
+        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/imgClose"
+                   android:src="@drawable/video_sprites_close" android:layout_weight="3"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:layout_weight="1" android:id="@+id/linearLayout2"/>
+    </LinearLayout>
+</LinearLayout>
+

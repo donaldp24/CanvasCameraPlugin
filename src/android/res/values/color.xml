@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#04CCE3</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#0000FF</color>
+    <color name="publish_bkcolor">#00000000</color>
+    <color name="custom_progress_sel_color">#FF0CE7D4</color>
+    <color name="custom_progress_bkcolor">#FF768891</color>
+</resources>
